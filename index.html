@@ -2,39 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Free Labubu Toy - Exclusive Hong Kong Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
         
         .gradient-bg {
             background: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 50%, #ecfeff 100%);
+            min-height: 100vh;
         }
         
         .card-gradient {
             background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
         }
         
-        .hover-scale {
-            transition: transform 0.3s ease;
+        /* Mobile-optimized animations */
+        .mobile-scale {
+            transition: transform 0.2s ease;
+            transform-origin: center;
         }
         
-        .hover-scale:hover {
-            transform: scale(1.05);
+        .mobile-scale:active {
+            transform: scale(0.98);
         }
         
         .notification-slide {
-            animation: slideInOut 8s infinite;
+            animation: slideInOut 6s infinite;
         }
         
         @keyframes slideInOut {
             0%, 100% { transform: translateX(-100%); opacity: 0; }
-            10%, 90% { transform: translateX(0); opacity: 1; }
+            15%, 85% { transform: translateX(0); opacity: 1; }
         }
         
         .pulse-animation {
@@ -43,17 +55,17 @@
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.02); }
         }
         
         .success-message {
-            animation: fadeInUp 0.5s ease;
+            animation: fadeInUp 0.4s ease;
         }
         
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
@@ -61,177 +73,288 @@
             }
         }
 
-        /* Loading animation for button */
+        /* Mobile loading animation */
         .loading {
             position: relative;
+            pointer-events: none;
         }
 
         .loading::after {
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
-            margin: auto;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
             border: 2px solid transparent;
             border-top-color: #ffffff;
             border-radius: 50%;
-            animation: spin 1s ease infinite;
+            animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Mobile-specific button styles */
+        .mobile-button {
+            min-height: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .mobile-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Mobile step cards */
+        .mobile-step {
+            padding: 20px 16px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-step:active {
+            transform: scale(0.99);
+            background-color: rgba(236, 72, 153, 0.02);
+        }
+
+        /* Mobile stats */
+        .mobile-stat {
+            padding: 20px 12px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-stat:active {
+            transform: scale(0.98);
+        }
+
+        /* Mobile header notification */
+        .mobile-notification {
+            padding: 16px 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Mobile main card */
+        .mobile-main-card {
+            margin: 16px;
+            padding: 24px 20px;
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile gift card */
+        .mobile-gift-card {
+            padding: 24px 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        /* Mobile value prop */
+        .mobile-value-prop {
+            padding: 24px 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        /* Ensure text is readable on mobile */
+        .mobile-title {
+            font-size: 28px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .mobile-subtitle {
+            font-size: 20px;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        .mobile-text {
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        /* Mobile step numbers */
+        .mobile-step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Mobile trust indicators */
+        .mobile-trust {
+            padding: 16px 0;
+        }
+
+        /* Mobile footer */
+        .mobile-footer {
+            padding: 24px 16px;
+            margin-top: 32px;
+        }
     </style>
 </head>
-<body class="gradient-bg min-h-screen">
-    <!-- Header Notification -->
-    <div class="text-center py-4 bg-white/80 backdrop-blur-sm border-b border-pink-100">
-        <div class="flex items-center justify-center gap-2 text-sm text-gray-600">
-            <div class="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
-                <span class="text-white text-xs font-bold">L</span>
+<body class="gradient-bg">
+    <!-- Mobile Header Notification -->
+    <div class="mobile-notification text-center bg-white/90 backdrop-blur-sm border-b border-pink-100">
+        <div class="flex items-center justify-center gap-2 text-gray-600 flex-wrap">
+            <div class="w-7 h-7 bg-pink-500 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">L</span>
             </div>
-            <span class="font-medium">Sarah M.</span>
+            <span class="font-semibold">Sarah M.</span>
             <span>just claimed a</span>
             <span class="font-bold text-pink-600">Free Labubu</span>
             <span>from Hong Kong!</span>
         </div>
     </div>
 
-    <div class="container mx-auto px-4 py-8 max-w-md">
-        <!-- Main Gift Card -->
-        <div class="card-gradient rounded-2xl p-6 text-white text-center mb-6 shadow-2xl hover-scale">
-            <div class="flex justify-center mb-4">
-                <div class="bg-white/20 p-3 rounded-full">
+    <div class="px-4 py-6">
+        <!-- Mobile Main Gift Card -->
+        <div class="card-gradient mobile-gift-card text-white text-center shadow-2xl mobile-scale">
+            <div class="flex justify-center mb-6">
+                <div class="bg-white/20 p-4 rounded-full">
                     <!-- Gift Icon -->
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                     </svg>
                 </div>
             </div>
-            <h1 class="text-xl font-bold mb-2">LABUBU HONG KONG</h1>
-            <p class="text-lg font-semibold">Free Collectible Toy</p>
-            <p class="text-sm opacity-90">Exclusive Site Access</p>
+            <h1 class="mobile-subtitle mb-3">LABUBU HONG KONG</h1>
+            <p class="text-xl font-semibold mb-2">Free Collectible Toy</p>
+            <p class="text-base opacity-90">Exclusive Site Access</p>
         </div>
 
-        <!-- Main Title -->
-        <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+        <!-- Mobile Main Title -->
+        <div class="text-center mb-8">
+            <h2 class="mobile-title text-gray-800 mb-4">
                 Labubu Rewards! 🧸
             </h2>
-            <div class="flex items-center justify-center gap-2 text-sm text-gray-600">
+            <div class="flex items-center justify-center gap-2 text-base text-gray-600 flex-wrap">
                 <span>Verified by</span>
                 <span class="font-bold text-pink-600">LABUBU HK</span>
                 <!-- Check Circle Icon -->
-                <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
             </div>
         </div>
 
-        <!-- Value Proposition -->
-        <div class="bg-white rounded-2xl p-6 text-center mb-6 shadow-lg border border-pink-100">
-            <h3 class="text-3xl font-bold text-gray-800 mb-2">Free Labubu Toy</h3>
-            <p class="text-gray-600 font-medium mb-4">Hong Kong Exclusive Collection</p>
-            <p class="text-sm text-pink-600 font-medium">Exclusive Gift Card Access</p>
+        <!-- Mobile Value Proposition -->
+        <div class="bg-white mobile-value-prop text-center shadow-lg border border-pink-100">
+            <h3 class="text-4xl font-bold text-gray-800 mb-3">Free Labubu Toy</h3>
+            <p class="mobile-text text-gray-600 mb-4">Hong Kong Exclusive Collection</p>
+            <p class="text-base text-pink-600 font-semibold">Exclusive Gift Card Access</p>
         </div>
 
-        <!-- Steps -->
-        <div class="space-y-4 mb-8">
-            <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-200">
-                <div class="w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                <span class="text-gray-700 font-medium">Click the button below</span>
+        <!-- Mobile Steps -->
+        <div class="space-y-3 mb-8">
+            <div class="mobile-step bg-white shadow-md border border-gray-100 flex items-center gap-4">
+                <div class="mobile-step-number bg-pink-500 text-white flex items-center justify-center">1</div>
+                <span class="mobile-text text-gray-700">Click the button below</span>
             </div>
-            <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-200">
-                <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                <span class="text-gray-700 font-medium">Enter your email & shipping info</span>
+            <div class="mobile-step bg-white shadow-md border border-gray-100 flex items-center gap-4">
+                <div class="mobile-step-number bg-purple-500 text-white flex items-center justify-center">2</div>
+                <span class="mobile-text text-gray-700">Enter your email & shipping info</span>
             </div>
-            <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-200">
-                <div class="w-8 h-8 bg-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
-                <span class="text-gray-700 font-medium">Complete verification steps</span>
+            <div class="mobile-step bg-white shadow-md border border-gray-100 flex items-center gap-4">
+                <div class="mobile-step-number bg-cyan-500 text-white flex items-center justify-center">3</div>
+                <span class="mobile-text text-gray-700">Complete verification steps</span>
             </div>
-            <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-200">
-                <div class="w-8 h-8 bg-indigo-500 text-white rounded-full flex items-center justify-center font-bold text-sm">4</div>
-                <span class="text-gray-700 font-medium">Get exclusive Labubu discounts</span>
+            <div class="mobile-step bg-white shadow-md border border-gray-100 flex items-center gap-4">
+                <div class="mobile-step-number bg-indigo-500 text-white flex items-center justify-center">4</div>
+                <span class="mobile-text text-gray-700">Get exclusive Labubu discounts</span>
             </div>
-            <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-200">
-                <div class="w-8 h-8 bg-pink-600 text-white rounded-full flex items-center justify-center font-bold text-sm">5</div>
-                <span class="text-gray-700 font-medium">Claim your free Labubu toy!</span>
+            <div class="mobile-step bg-white shadow-md border border-gray-100 flex items-center gap-4">
+                <div class="mobile-step-number bg-pink-600 text-white flex items-center justify-center">5</div>
+                <span class="mobile-text text-gray-700">Claim your free Labubu toy!</span>
             </div>
         </div>
 
-        <!-- CTA Button -->
+        <!-- Mobile CTA Button -->
         <button
             id="claimButton"
-            class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl hover-scale transition-all duration-200 mb-6 pulse-animation"
+            class="w-full mobile-button bg-gradient-to-r from-pink-600 to-purple-600 text-white mb-6 pulse-animation"
         >
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex items-center justify-center gap-3">
                 <!-- Gift Icon -->
-                <svg id="buttonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="buttonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                 </svg>
                 <span id="buttonText">CLAIM FREE LABUBU TOY</span>
                 <!-- Sparkles Icon -->
-                <svg id="buttonSparkles" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="buttonSparkles" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l1.5 1.5L5 6l1.5 1.5L5 9l1.5 1.5L5 12l1.5 1.5L5 15l1.5 1.5L5 18l1.5 1.5L5 21M19 3l-1.5 1.5L19 6l-1.5 1.5L19 9l-1.5 1.5L19 12l-1.5 1.5L19 15l-1.5 1.5L19 18l-1.5 1.5L19 21"></path>
                 </svg>
             </div>
         </button>
 
-        <!-- Success Message -->
-        <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-6 success-message">
-            <div class="flex items-center gap-2">
+        <!-- Mobile Success Message -->
+        <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-2xl mb-6 success-message">
+            <div class="flex items-center gap-3">
                 <!-- Check Circle Icon -->
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
-                <span>Success! Redirecting to claim your Labubu...</span>
+                <span class="mobile-text font-semibold">Success! Redirecting to claim your Labubu...</span>
             </div>
         </div>
 
-        <!-- Trust Indicators -->
-        <div class="text-center mb-6">
-            <div class="flex justify-center gap-1 mb-2">
+        <!-- Mobile Trust Indicators -->
+        <div class="mobile-trust text-center mb-8">
+            <div class="flex justify-center gap-1 mb-3">
                 <!-- 5 Star Rating -->
-                <svg class="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
-                <svg class="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
-                <svg class="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
-                <svg class="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
-                <svg class="w-4 h-4 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 fill-yellow-400 text-yellow-400" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                 </svg>
             </div>
-            <p class="text-sm text-gray-600">Trusted by 50k+ collectors worldwide</p>
+            <p class="mobile-text text-gray-600">Trusted by 50k+ collectors worldwide</p>
         </div>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-3 gap-4 text-center">
-            <div class="bg-white rounded-xl p-4 shadow-md border border-pink-100">
-                <div class="text-xl font-bold text-pink-600 mb-1">50k+</div>
-                <div class="text-xs text-gray-600">Happy Collectors</div>
+        <!-- Mobile Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-8">
+            <div class="mobile-stat bg-white shadow-md border border-pink-100 text-center">
+                <div class="text-2xl font-bold text-pink-600 mb-2">50k+</div>
+                <div class="text-sm text-gray-600 font-medium">Happy Collectors</div>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-md border border-purple-100">
-                <div class="text-xl font-bold text-purple-600 mb-1">$2M+</div>
-                <div class="text-xs text-gray-600">Toys Distributed</div>
+            <div class="mobile-stat bg-white shadow-md border border-purple-100 text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-2">$2M+</div>
+                <div class="text-sm text-gray-600 font-medium">Toys Distributed</div>
             </div>
-            <div class="bg-white rounded-xl p-4 shadow-md border border-cyan-100">
-                <div class="text-xl font-bold text-cyan-600 mb-1">4.9★</div>
-                <div class="text-xs text-gray-600">Collector Rating</div>
+            <div class="mobile-stat bg-white shadow-md border border-cyan-100 text-center">
+                <div class="text-2xl font-bold text-cyan-600 mb-2">4.9★</div>
+                <div class="text-sm text-gray-600 font-medium">Collector Rating</div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center mt-8 text-xs text-gray-500">
-            <p>🇭🇰 Authentic Hong Kong Labubu Collection</p>
-            <p class="mt-2">Terms & Conditions • LABUBU Verified Program</p>
+        <!-- Mobile Footer -->
+        <div class="mobile-footer text-center text-sm text-gray-500">
+            <p class="mb-2">🇭🇰 Authentic Hong Kong Labubu Collection</p>
+            <p>Terms & Conditions • LABUBU Verified Program</p>
         </div>
     </div>
 
@@ -239,7 +362,7 @@
         // 🎯 REDIRECT CONFIGURATION - CHANGE THIS URL TO YOUR OFFER LINK
         const REDIRECT_URL = 'https://rewarrdsgiant.com/aff_c?offer_id=2701&aff_id=28197';
         
-        // JavaScript functionality
+        // Mobile-optimized JavaScript functionality
         document.addEventListener('DOMContentLoaded', function() {
             const claimButton = document.getElementById('claimButton');
             const successMessage = document.getElementById('successMessage');
@@ -247,7 +370,19 @@
             const buttonIcon = document.getElementById('buttonIcon');
             const buttonSparkles = document.getElementById('buttonSparkles');
 
-            claimButton.addEventListener('click', function() {
+            // Prevent double-tap zoom on button
+            claimButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+            });
+
+            claimButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Prevent multiple clicks
+                if (claimButton.classList.contains('loading')) {
+                    return;
+                }
+                
                 // Add loading state
                 claimButton.classList.add('loading');
                 claimButton.disabled = true;
@@ -258,11 +393,22 @@
                 // Show success message
                 successMessage.classList.remove('hidden');
                 
-                // Redirect after 2 seconds
+                // Haptic feedback for mobile (if supported)
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+                
+                // Redirect after 1.5 seconds (faster for mobile)
                 setTimeout(function() {
-                    window.open(REDIRECT_URL, '_blank');
+                    try {
+                        // Try to open in same window first (better for mobile)
+                        window.location.href = REDIRECT_URL;
+                    } catch (error) {
+                        // Fallback to new window
+                        window.open(REDIRECT_URL, '_blank');
+                    }
                     
-                    // Reset button state after redirect
+                    // Reset button state after redirect attempt
                     setTimeout(function() {
                         claimButton.classList.remove('loading');
                         claimButton.disabled = false;
@@ -271,21 +417,64 @@
                         buttonSparkles.style.display = 'block';
                         successMessage.classList.add('hidden');
                     }, 1000);
-                }, 2000);
+                }, 1500);
             });
 
-            // Random notification generator
-            const names = ['Sarah M.', 'Alex K.', 'Emma L.', 'David C.', 'Lisa W.', 'Mike R.'];
-            const headerNotification = document.querySelector('.text-center.py-4');
+            // Mobile-optimized notification updates
+            const names = ['Sarah M.', 'Alex K.', 'Emma L.', 'David C.', 'Lisa W.', 'Mike R.', 'Jessica T.', 'Ryan P.'];
+            const headerNotification = document.querySelector('.mobile-notification');
             
             function updateNotification() {
                 const randomName = names[Math.floor(Math.random() * names.length)];
-                const nameElement = headerNotification.querySelector('.font-medium');
-                nameElement.textContent = randomName;
+                const nameElement = headerNotification.querySelector('.font-semibold');
+                if (nameElement) {
+                    nameElement.textContent = randomName;
+                }
             }
 
-            // Update notification every 5 seconds
-            setInterval(updateNotification, 5000);
+            // Update notification every 4 seconds (faster for mobile engagement)
+            setInterval(updateNotification, 4000);
+
+            // Prevent context menu on long press (mobile)
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            // Prevent text selection on mobile
+            document.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+
+            // Add touch feedback to interactive elements
+            const interactiveElements = document.querySelectorAll('.mobile-scale, .mobile-step, .mobile-stat');
+            interactiveElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Optimize for mobile performance
+        window.addEventListener('load', function() {
+            // Preload critical resources
+            const link = document.createElement('link');
+            link.rel = 'dns-prefetch';
+            link.href = '//rewarrdsgiant.com';
+            document.head.appendChild(link);
         });
     </script>
 </body>
