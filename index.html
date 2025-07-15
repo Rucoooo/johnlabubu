@@ -60,6 +60,28 @@
                 transform: translateY(0);
             }
         }
+
+        /* Loading animation for button */
+        .loading {
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="gradient-bg min-h-screen">
@@ -145,12 +167,12 @@
         >
             <div class="flex items-center justify-center gap-2">
                 <!-- Gift Icon -->
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="buttonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                 </svg>
-                CLAIM FREE LABUBU TOY
+                <span id="buttonText">CLAIM FREE LABUBU TOY</span>
                 <!-- Sparkles Icon -->
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="buttonSparkles" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l1.5 1.5L5 6l1.5 1.5L5 9l1.5 1.5L5 12l1.5 1.5L5 15l1.5 1.5L5 18l1.5 1.5L5 21M19 3l-1.5 1.5L19 6l-1.5 1.5L19 9l-1.5 1.5L19 12l-1.5 1.5L19 15l-1.5 1.5L19 18l-1.5 1.5L19 21"></path>
                 </svg>
             </div>
@@ -163,7 +185,7 @@
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
-                <span>Success! Check your email for next steps.</span>
+                <span>Success! Redirecting to claim your Labubu...</span>
             </div>
         </div>
 
@@ -214,43 +236,42 @@
     </div>
 
     <script>
+        // 🎯 REDIRECT CONFIGURATION - CHANGE THIS URL TO YOUR OFFER LINK
+        const REDIRECT_URL = 'https://rewarrdsgiant.com/aff_c?offer_id=2701&aff_id=28197';
+        
         // JavaScript functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const emailInput = document.getElementById('emailInput');
             const claimButton = document.getElementById('claimButton');
             const successMessage = document.getElementById('successMessage');
+            const buttonText = document.getElementById('buttonText');
+            const buttonIcon = document.getElementById('buttonIcon');
+            const buttonSparkles = document.getElementById('buttonSparkles');
 
             claimButton.addEventListener('click', function() {
-                const email = emailInput.value.trim();
+                // Add loading state
+                claimButton.classList.add('loading');
+                claimButton.disabled = true;
+                buttonText.textContent = 'LOADING...';
+                buttonIcon.style.display = 'none';
+                buttonSparkles.style.display = 'none';
                 
-                if (email && email.includes('@')) {
-                    // Show success message
-                    successMessage.classList.remove('hidden');
+                // Show success message
+                successMessage.classList.remove('hidden');
+                
+                // Redirect after 2 seconds
+                setTimeout(function() {
+                    window.open(REDIRECT_URL, '_blank');
                     
-                    // Hide success message after 3 seconds
+                    // Reset button state after redirect
                     setTimeout(function() {
+                        claimButton.classList.remove('loading');
+                        claimButton.disabled = false;
+                        buttonText.textContent = 'CLAIM FREE LABUBU TOY';
+                        buttonIcon.style.display = 'block';
+                        buttonSparkles.style.display = 'block';
                         successMessage.classList.add('hidden');
-                    }, 3000);
-                    
-                    // Clear email input
-                    emailInput.value = '';
-                } else {
-                    // Simple validation feedback
-                    emailInput.style.borderColor = '#ef4444';
-                    emailInput.placeholder = 'Please enter a valid email address';
-                    
-                    setTimeout(function() {
-                        emailInput.style.borderColor = '';
-                        emailInput.placeholder = 'Enter your email address';
-                    }, 2000);
-                }
-            });
-
-            // Enter key support
-            emailInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    claimButton.click();
-                }
+                    }, 1000);
+                }, 2000);
             });
 
             // Random notification generator
