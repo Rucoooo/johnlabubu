@@ -370,22 +370,19 @@
             const buttonIcon = document.getElementById('buttonIcon');
             const buttonSparkles = document.getElementById('buttonSparkles');
 
-            // Prevent double-tap zoom on button
-            claimButton.addEventListener('touchend', function(e) {
-                e.preventDefault();
-            });
-
-            claimButton.addEventListener('click', function(e) {
-                e.preventDefault();
+            // SIMPLIFIED BUTTON CLICK HANDLER - BULLETPROOF VERSION
+            function handleButtonClick() {
+                console.log('Button clicked!'); // Debug log
                 
                 // Prevent multiple clicks
-                if (claimButton.classList.contains('loading')) {
+                if (claimButton.disabled) {
+                    console.log('Button already disabled');
                     return;
                 }
                 
                 // Add loading state
-                claimButton.classList.add('loading');
                 claimButton.disabled = true;
+                claimButton.classList.add('loading');
                 buttonText.textContent = 'LOADING...';
                 buttonIcon.style.display = 'none';
                 buttonSparkles.style.display = 'none';
@@ -398,26 +395,21 @@
                     navigator.vibrate(50);
                 }
                 
-                // Redirect after 1.5 seconds (faster for mobile)
-                setTimeout(function() {
-                    try {
-                        // Try to open in same window first (better for mobile)
-                        window.location.href = REDIRECT_URL;
-                    } catch (error) {
-                        // Fallback to new window
-                        window.open(REDIRECT_URL, '_blank');
-                    }
-                    
-                    // Reset button state after redirect attempt
-                    setTimeout(function() {
-                        claimButton.classList.remove('loading');
-                        claimButton.disabled = false;
-                        buttonText.textContent = 'CLAIM FREE LABUBU TOY';
-                        buttonIcon.style.display = 'block';
-                        buttonSparkles.style.display = 'block';
-                        successMessage.classList.add('hidden');
-                    }, 1000);
-                }, 1500);
+                console.log('Redirecting to:', REDIRECT_URL); // Debug log
+                
+                // IMMEDIATE REDIRECT - NO DELAY
+                window.location.href = REDIRECT_URL;
+            }
+
+            // Multiple event listeners for maximum compatibility
+            claimButton.addEventListener('click', handleButtonClick);
+            claimButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleButtonClick();
+            });
+            claimButton.addEventListener('touchstart', function(e) {
+                // Visual feedback on touch
+                this.style.transform = 'scale(0.98)';
             });
 
             // Mobile-optimized notification updates
@@ -456,6 +448,8 @@
                     this.style.transform = 'scale(1)';
                 });
             });
+
+            console.log('Page loaded, button ready!'); // Debug log
         });
 
         // Prevent zoom on double tap
@@ -475,6 +469,8 @@
             link.rel = 'dns-prefetch';
             link.href = '//rewarrdsgiant.com';
             document.head.appendChild(link);
+            
+            console.log('All resources loaded!'); // Debug log
         });
     </script>
 </body>
